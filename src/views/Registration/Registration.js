@@ -53,15 +53,16 @@ class Registration extends Component {
 
     if (user.firstName && user.lastName && user.Email) {
       let componentRef = this;
-      let tableName = "Users";
+      let tableName = "Attendance";
       let docName = user.firstName + " " + user.lastName;
       let doc = {
         firstName: user.firstName,
         lastName: user.lastName,
         Email: user.Email,
         City: user.City,
-        Conference: user.Conference,
-        Role: user.Role
+        confRoom: user.Conference,
+        Role: user.Role,
+        timesteamp : new Date()
       }
 
       DBUtil.addDoc(tableName, docName, doc, function () {          //add doc to firebase
