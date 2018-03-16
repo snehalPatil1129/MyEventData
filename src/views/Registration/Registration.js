@@ -31,7 +31,7 @@ class Registration extends Component {
     this.changeFunction = this.changeFunction.bind(this);
     this.submitFunction = this.submitFunction.bind(this);
     this.resetField = this.resetField.bind(this);
-    this.toggleChange = this.toggleChange.bind(this);
+   // this.toggleChange = this.toggleChange.bind(this);
   }
 
   changeFunction(event) {
@@ -49,7 +49,7 @@ class Registration extends Component {
     event.preventDefault();
     this.setState({ submitted: true });
     const { user } = this.state;
-    console.log('New Member', user);
+    //console.log('New Member', user);
 
     if (user.firstName && user.lastName && user.Email) {
       let componentRef = this;
@@ -66,7 +66,8 @@ class Registration extends Component {
       }
 
       DBUtil.addDoc(tableName, docName, doc, function () {          //add doc to firebase
-        console.log('added');
+        //console.log('added');
+        alert('Registered Successfully');
         componentRef.props.history.push('/login');
       },
         function (err) {
@@ -88,10 +89,10 @@ class Registration extends Component {
       isChecked: false
     });
   }
-  toggleChange() {
-    this.setState({ isChecked: !this.state.isChecked })
-    console.log("chekbox", this.state.isChecked)
-  }
+  // toggleChange() {
+  //   this.setState({ isChecked: !this.state.isChecked })
+  //  // console.log("chekbox", this.state.isChecked)
+  // }
   render() {
     const { user, submitted } = this.state;
     return (
@@ -102,7 +103,7 @@ class Registration extends Component {
               <Card className="mx-6">
                 <CardBody className="p-4">
                   <h1>Register</h1>
-                  <p className="text-muted">Create your account</p>
+                  {/* <p className="text-muted">Create your account</p> */}
                   <FormGroup row>
                     <Col xs="12" md="6" className={(submitted && !user.firstName ? ' has-error' : '')}  >
                       <InputGroup className="mb-3">
@@ -200,10 +201,11 @@ class Registration extends Component {
                     </InputGroup>
                   </FormGroup>
                   <FormGroup row>
-                    <Col xs="6" md="3" >
-                      <Button type="submit" size="md" color="primary" onClick={this.submitFunction} >Create Account</Button>
+                    <Col xs="3" md="1" >
+                      <Button type="submit" size="md" color="primary" onClick={this.submitFunction} ><i className="icon-note"></i> Register</Button>
                     </Col>
-                    <Col md="3">
+                    <Col md="1"> </Col>
+                    <Col md="1">
                       <Button onClick={this.resetField} type="reset" size="md" color="danger" ><i className="fa fa-ban"></i> Reset</Button>
                     </Col>
                   </FormGroup>

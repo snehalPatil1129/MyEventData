@@ -12,7 +12,7 @@ import User from '../../views/Users/User/';
 import Role from '../../views/Users/Role/';
 import Reports from '../../views/Reports/Reports';
 import Attendance from '../../views/Attendance/Attendance';
-import ReactTable from '../../views/Questions/ReactTable';
+import RenderForm from '../../views/Questions/RenderForm';
 import Questions from '../../views/Questions/Questions';
 import Session from '../../views/Sessions/Session';
 import Registration from '../../views/Registration/Registration';
@@ -38,7 +38,7 @@ class Full extends Component {
                 <Route path='/attendance' name='Attendance' component={Attendance} />
                 <Route path='/session' name='Session' component={Session} />
                 <Route path='/rooms' name='Rooms' component={Rooms} />
-                <Route path='/reactTable' name='ReactTable' component={ReactTable} />
+                <Route path='/renderForm' name='RenderForm' component={RenderForm} />
                 <Route path='/questions' name='Questions' component={Questions} />
                 <Route path='/registrationList' name='Registration List' component={RegistrationList} />
                 <Redirect from="/" to="/dashboard"/>

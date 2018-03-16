@@ -30,8 +30,8 @@ export default {
       icon: 'icon-note'
     },
     {
-      name: 'ReactTable',
-      url: '/reactTable',
+      name: 'RenderForm',
+      url: '/renderForm',
       icon: 'icon-note'
     },
     {

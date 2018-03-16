@@ -9,10 +9,9 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import { DBUtil } from '../../services';
 
-let array = [];
 let idx = 0;
 
-let ShareInput = [];
+// let ShareInput = [];
 class Questions extends Component {
   constructor() {
     super();
@@ -20,41 +19,55 @@ class Questions extends Component {
       FormName: '',
       Questions: [],
     };
-    this.Section = [];
-    this.onNameChange = this.onNameChange.bind(this);
-    this.renderQuestions = this.renderQuestions.bind(this);
-    this.renderAnswerType = this.renderAnswerType.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-    this.onCapture = this.onCapture.bind(this);
-    this.onAddQuestion = this.onAddQuestion.bind(this);
-   this.onFieldChange = this.onFieldChange.bind(this);
-    this.onInputValueChange =  this.onInputValueChange.bind(this);
-  
+    this.onNameChange = this.onNameChange.bind(this);    //On form name change
+    this.renderQuestions = this.renderQuestions.bind(this);    //Render Input field for adding question
+    this.renderAnswerType = this.renderAnswerType.bind(this);  //Render Input field for question after selecting input type for question
+    this.onAdditionofFeilds = this.onAdditionofFeilds.bind(this);        //On adding field values for check box/ multiple choice
+    this.onAddQuestion = this.onAddQuestion.bind(this);         //on click of add question
+    this.onFieldChange = this.onFieldChange.bind(this);           //
+    this.onInputValueChange =  this.onInputValueChange.bind(this);    //on adding question for respective questions
+    this.onDeleteQuestion = this.onDeleteQuestion.bind(this);       //on deleting question          
+     this.onSubmit = this.onSubmit.bind(this);                 //On submitting the created form
+
   }
 
   onSubmit(evt){
-    console.log('Event details',this.state);
-    ////////
-    let form = this.state;
-    // if (form.FormName && form.Questions) {
+    console.log('Event details', this.state);
+    this.state.Questions.forEach(fItem => {
+      //let HeadAches = fItem.value;
+      fItem.value.sort();
+      var j=0;
+      for(var i= 0; i<fItem.value.length; i++){
+        if(fItem.value[i] == undefined){
+           j++;
+        }
+      }
+      fItem.value.length =   fItem.value.length- j;
+    })
+    if (this.state.FormName) {
+      let form = this.state;
       let componentRef = this;
       let tableName = "Que";
       let docName = form.FormName;
       let doc = {
-        Questions : form.Questions
+        Questions: form.Questions
       }
-
       DBUtil.addDoc(tableName, docName, doc, function () {          //add doc to firebase
         console.log('added');
-        componentRef.props.history.push('/login');
+        alert("Form " + docName + " successfully added");
+        componentRef.props.history.push('/dashboard');
       },
         function (err) {
           console.log('Error', err);
         });
     }
+    else{
+      alert('Form name cannot be blank');
+    }
+  }
     /////////
   
-  onCapture(event , id){
+  onAdditionofFeilds(event , id){
     let fieldName = parseInt(event.target.name);
     let fieldId =  parseInt(event.target.id);
     let opts = this.state.Questions;
@@ -62,35 +75,42 @@ class Questions extends Component {
     this.setState({
       Questions : opts
     })
-   // console.log('choice ',opts , "ID" , id);
   }
   onInputValueChange(event, id) {
     let tempQuestions = this.state.Questions;
     tempQuestions[id].AnswerFeild = event.target.value;
     this.setState({Questions: tempQuestions});
-   // console.log('Question', tempQuestions);
   }
 
  onFieldChange(event){
    let QueTitle = event.target.value;
    let QueId =event.target.id;
    this.state.Questions[QueId].QuestionTitle = QueTitle; 
-  // console.log('Question Data', this.state);
  }
   onAddQuestion(evt) {
     let tempQuestions = this.state.Questions;
     if (tempQuestions.length == 0) {
-      tempQuestions.push({ QueId: idx , QuestionTitle: '', AnswerFeild: '' , value: [] });
+      tempQuestions.push({ QueId: 0  , QuestionTitle: '', AnswerFeild: '' , value: [] });
     }
     else {
-      tempQuestions.push({ QueId: (++idx) , QuestionTitle: '', AnswerFeild: '', value: [] });
+      tempQuestions.push({ QueId: tempQuestions.length , QuestionTitle: '', AnswerFeild: '', value: [] });
     }
     this.setState({
       Questions: tempQuestions
     })
-  // console.log('state changed',this.state);
   }
 
+  onDeleteQuestion(event, Que) {
+    const id = Que.QueId;
+    let NewState = this.state.Questions;
+    NewState.splice(id, 1);
+    for (var i = 0; i < NewState.length; i++) {  //adjusting index and QueID 
+      if (NewState[i].QueId != i) {
+        NewState[i].QueId = i;
+      }
+    }
+    this.setState({ Questions: NewState });
+  }
 
 
   onNameChange(evt) {
@@ -120,23 +140,26 @@ class Questions extends Component {
       return (
         <div>
           <FormGroup row>
-            <Col xs="12" md="3">
-              <Label>Add Choices :  </Label>
-            </Col>
-            <Col md="9">
+            <Col xs="12">
               <FormGroup check inline>
                 <Input className="form-check-input" type="radio" id={question.QueId} name="inline-radios" value="option1" />
-                <Input type="text" placeholder="Title" id={question.QueId} name = "0" key="1"  onChange={(event) => this.onCapture(event, idx )} />
+                <Input type="text" placeholder="Add Choice" id={question.QueId} name = "0"   onChange={(event) => this.onAdditionofFeilds(event, idx )} />
               </FormGroup>
               <FormGroup check inline>
                 <Input className="form-check-input" type="radio" id={question.QueId} name="inline-radios" value="option2" />
-                <Input type="text" placeholder="Title" id={question.QueId} name="1"  key="2" onChange={(event) => this.onCapture(event, idx)} />
-
+                <Input type="text" placeholder="Add Choice" id={question.QueId} name="1"   onChange={(event) => this.onAdditionofFeilds(event, idx)} />
               </FormGroup>
               <FormGroup check inline>
                 <Input className="form-check-input" type="radio" id={question.QueId} name="inline-radios" value="option3" />
-                <Input type="text" placeholder="Title" id={question.QueId} name="2"  key="3" onChange={(event) => this.onCapture(event, idx)} />
-
+                <Input type="text" placeholder="Add Choice" id={question.QueId} name="2"   onChange={(event) => this.onAdditionofFeilds(event, idx)} />
+              </FormGroup>
+              <FormGroup check inline>
+                <Input className="form-check-input" type="radio" id={question.QueId} name="inline-radios" value="option3" />
+                <Input type="text" placeholder="Add Choice" id={question.QueId} name="3"   onChange={(event) => this.onAdditionofFeilds(event, idx)} />
+              </FormGroup>
+              <FormGroup check inline>
+                <Input className="form-check-input" type="radio" id={question.QueId} name="inline-radios" value="option3" />
+                <Input type="text" placeholder="Add Choice" id={question.QueId} name="4"  onChange={(event) => this.onAdditionofFeilds(event, idx)} />
               </FormGroup>
             </Col>
           </FormGroup> 
@@ -146,30 +169,40 @@ class Questions extends Component {
       return (
         <div> 
           <FormGroup row>
-            <Col xs="12" md="3">
-              <Label>Check Box</Label>
-            </Col>
-            <Col md="9">
-              <FormGroup check inline>
-                <Label check>
-                  <Input type="checkbox" id={question.QueId} /> 
-                            </Label>
-                            <Input type="text" placeholder="Title" id={question.QueId} name = "0" key="1"  onChange={(event) => this.onCapture(event, idx )} />
-
-              </FormGroup>
-              <FormGroup check inline>
-                <Label check>
-                  <Input type="checkbox" id={question.QueId} /> 
-                            </Label>
-                            <Input type="text" placeholder="Title" id={question.QueId} name = "1" key="1"  onChange={(event) => this.onCapture(event, idx )} />
-
-              </FormGroup>
+            <Col xs="12">
               <FormGroup check inline>
                 <Label check>
                   <Input type="checkbox" id={question.QueId} />
-                            </Label>
-                            <Input type="text" placeholder="Title" id={question.QueId} name = "2" key="1"  onChange={(event) => this.onCapture(event, idx )} />
+                </Label>
+                <Input type="text" placeholder="Add value" id={question.QueId} name="0"  onChange={(event) => this.onAdditionofFeilds(event, idx)} />
+              </FormGroup>
 
+              <FormGroup check inline>
+                <Label check>
+                  <Input type="checkbox" id={question.QueId} />
+                </Label>
+                <Input type="text" placeholder="Add value" id={question.QueId} name="1" onChange={(event) => this.onAdditionofFeilds(event, idx)} />
+              </FormGroup>
+
+              <FormGroup check inline>
+                <Label check>
+                  <Input type="checkbox" id={question.QueId} />
+                </Label>
+                <Input type="text" placeholder="Add value" id={question.QueId} name="2"  onChange={(event) => this.onAdditionofFeilds(event, idx)} />
+              </FormGroup>
+
+              <FormGroup check inline>
+                <Label check>
+                  <Input type="checkbox" id={question.QueId} />
+                </Label>
+                <Input type="text" placeholder="Add value" id={question.QueId} name="3" onChange={(event) => this.onAdditionofFeilds(event, idx)} />
+              </FormGroup>
+
+              <FormGroup check inline>
+                <Label check>
+                  <Input type="checkbox" id={question.QueId} />
+                </Label>
+                <Input type="text" placeholder="Add value" id={question.QueId} name="4"  onChange={(event) => this.onAdditionofFeilds(event, idx)} />
               </FormGroup>
             </Col>
           </FormGroup>
@@ -180,13 +213,20 @@ class Questions extends Component {
       <div />
     );
   }
-
+  
   renderQuestions() {
     let questionArea = this.state.Questions.map((Que, idx) => {
       return (
         <div key={idx}>
           <div id={Que.QueId}>
-            <h4>Question No {Que.QueId}</h4>
+          <FormGroup row>
+            <Col xs="12" md="6">
+            <h4>Question No {Que.QueId}</h4> 
+            </Col>
+            <Col md="6">
+            <h5> <Badge color="danger" onClick={(event ) => this.onDeleteQuestion(event ,Que)} pill>Delete Question no {Que.QueId} </Badge></h5>
+            </Col>
+            </FormGroup>
             <FormGroup row>
               <Col md="12" md="6"   >
                 <InputGroup >
@@ -210,11 +250,8 @@ class Questions extends Component {
               </Col>
             </FormGroup>  
           </div>
-        {/* <div id={Que.QueId}>
-        </div> */}
-        {this.renderAnswerType(Que)}
-        {/* <InputField  state={this.state} ref={(cd) => this.child = cd}/> */}
-          </div>
+          {this.renderAnswerType(Que)}
+        </div>
       );
     });
     return questionArea;
@@ -247,10 +284,10 @@ class Questions extends Component {
                     </Col>
                   </Row>
                   <FormGroup row>
-                    <Col xs="6" md="3" >
+                    <Col xs="3" md="2" >
                       <Button type="button" size="md" color="primary" onClick={this.onSubmit}  >Create Form</Button>
                     </Col>
-                    <Col md="3">
+                    <Col md="1">
                       <Button type="reset" size="md" color="danger" ><i className="fa fa-ban"></i> Reset</Button>
                     </Col>
                   </FormGroup>

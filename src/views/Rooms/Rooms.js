@@ -93,7 +93,8 @@ class Rooms extends Component {
             }
             DBUtil.addDoc(tableName, docName, doc ,function(){          //add doc to firebase
                 console.log('added');
-                componentRef.props.history.push('/login');
+                alert("Room " + docName + " successfully added" );
+                componentRef.props.history.push('/dashboard');
             },
             function(err){
                 console.log('Error' , err);
