@@ -3,7 +3,7 @@ import { Bar, Line } from 'react-chartjs-2';
 import {
   Container, Input, InputGroup, InputGroupText, InputGroupAddon, Badge, Row, Col, Progress, Dropdown, DropdownToggle,
   DropdownMenu, DropdownItem, Card, CardHeader, CardBody, CardFooter, CardTitle, Button, ButtonToolbar,
-  ButtonGroup, ButtonDropdown, Label, Table, Form, FormGroup, FormText,
+  ButtonGroup, ButtonDropdown, Label, Table, Form, FormGroup, FormText,Select
 } from 'reactstrap';
 import { createBrowserHistory } from 'history';
 import * as firebase from 'firebase';
@@ -37,7 +37,7 @@ class Registration extends Component {
     this.submitFunction = this.submitFunction.bind(this);
     this.resetField = this.resetField.bind(this);
     this.onGenerateQRcode = this.onGenerateQRcode.bind(this);
-    this.openWin = this.openWin.bind(this);
+    this.openQRcodeWindow = this.openQRcodeWindow.bind(this);
     this.onHandleValidations = this.onHandleValidations.bind(this);
   }
 
@@ -118,13 +118,13 @@ onHandleValidations(user){
       //console.log(generatedQR);
       this.setState({ Qrurl: generatedQR })
       setTimeout(() => {
-        this.openWin(user)
+        this.openQRcodeWindow(user)
       }, 250);
     }
   }
 
-  openWin(user) {
-    //console.log("hello form openwin")
+  openQRcodeWindow(user) {
+    //console.log("hello form openQRcodeWindow")
     let fname = user.firstName;
     let lname = user.lastName;
     let name = fname + " " + lname;
@@ -151,35 +151,11 @@ onHandleValidations(user){
     }, 1000);
   }
 
-
-
-
-
   submitFunction(event) {
     event.preventDefault();
     this.setState({ submitted: true });
     const { user } = this.state;
     this.onHandleValidations(user);
-    // if (user.Email != null || user.Email != undefined) {
-    //   let lastAtPos = user.Email.lastIndexOf('@');
-    //   let lastDotPos = user.Email.lastIndexOf('.');
-    //   if (!(lastAtPos < lastDotPos && lastAtPos > 0 && user.Email.indexOf('@@') == -1 && lastDotPos > 2 && (user.Email.length - lastDotPos) > 2)) {
-    //     this.state.invalidEmail = true;
-    //   }
-    //   else {
-    //     this.state.invalidEmail = false;
-    //   }
-    // }
-    // else if (user.Email == null) {
-    //   this.state.invalidEmail = true;
-    // }
-
-    // if (user.Contact == null || user.Contact.length < 10 || user.Contact.length > 10) {
-    //   this.state.invalidContact = true;
-    // }
-    // else {
-    //   this.state.invalidContact = false;
-    // }
 
     if (user.firstName && user.lastName && !this.state.invalidEmail && !this.state.invalidContact) {
       let componentRef = this;
@@ -214,21 +190,28 @@ onHandleValidations(user){
         lastName: '',
         Email: '',
         City: '',
-        Contact: "",
-        Conference: "",
+        Contact: '',
+        Conference: '',
         Role: ''
       },
       invalidContact: false,
       invalidEmail: false,
       submitted: false
     });
+    document.getElementById("Conference").value = " ";
+    document.getElementById("City").value = " ";
+
   }
-  // toggleChange() {
-  //   this.setState({ isChecked: !this.state.isChecked })
-  //  // console.log("chekbox", this.state.isChecked)
-  // }
+  
   render() {
     const { user, submitted } = this.state;
+    let ConferenceValues = [
+      { label: "Conference 1", value: "Conference 1" },
+      { label: "Conference 2", value: "Conference 2" },
+      { label: "Conference 3", value: "Conference 3" }
+    ]
+      
+   
     return (
       <div className="animated fadeIn">
         <Container>
@@ -328,6 +311,15 @@ onHandleValidations(user){
                           <option value="Conference 3">Conference 3</option>
                         </Input>
                       </InputGroup>
+                      {/* <Select
+                        onChange={this.changeFunction}
+                        placeholder="---Select---"
+                        simpleValue
+                        value={user.Conference}
+                        options={ConferenceValues}
+                      /> */}
+
+
                       {/* <Row>
                       <Col md="6">
                       {submitted && user.Conference && 

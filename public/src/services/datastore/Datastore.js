@@ -44,7 +44,6 @@ export class DBUtil {
                 errorFn(ex);
             });
     }
-    //added by snehal patil
     static addDoc(tableName ,docName ,doc ,callbackFn ,errorFn){
         this.getDocRef(tableName)
         .doc(docName)
@@ -56,13 +55,34 @@ export class DBUtil {
             errorFn(ex);
         });
     }
+    
     static addChangeListener(tableName, callbackFn, errorFn){
-       
-        this.getDocRef(tableName)
-        .onSnapshot((querySnapshot) =>{
+        this.getDocRef(tableName).onSnapshot((querySnapshot) =>{
             //Audit listener
             callbackFn(querySnapshot);
 
         });
     }
+
+     
+    static addDoc(tableName ,docName ,doc ,callbackFn ,errorFn){
+        this.getDocRef(tableName)
+        .doc(docName)
+        .set(doc)
+        .then((docRef) =>{
+            callbackFn(docRef);
+        })
+        .catch((ex) => {
+            errorFn(ex);
+        });
+    }
+
+    // Method for update only delete flag
+    static deleteDoc(tableName,param){
+        this.getDocRef(tableName).doc(param[0].docName).update({
+            "isDelete": param[0].deleteFlag
+          });
+    }
+
+
 }

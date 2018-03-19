@@ -34,7 +34,6 @@ class Attendance extends React.Component {
                     UserID: doc.id,
                     UserData: doc.data()
                 });
-                Users.sort();
             });
             componentRef.setState({items: Users, itemsID: UsersID})
         });
@@ -44,9 +43,9 @@ class Attendance extends React.Component {
             return <tr >
                 <td>{row.UserID}</td>
                 <td>{row.UserData.confRoom}</td>
-                <td><FormattedDate value={row.UserData.timesteamp.toString()} />   <FormattedTime value={row.UserData.timesteamp.toString()}  /> </td>
+                <td><FormattedDate value={row.UserData.timesteamp.toString()} />   <FormattedTime value={row.UserData.timesteamp.toString()} /> </td>
                 <td>{row.UserData.RegistrationType}</td>
-                </tr>
+            </tr>
             });
 
         return (
@@ -62,7 +61,7 @@ class Attendance extends React.Component {
                                             <th>Name</th>
                                             <th>Registered for</th>
                                             <th>Date</th>
-                                            <th>Registration type</th>
+                                            <th>Registration type </th>
                                         </thead>
                                         {this.rows}
                                     </Table>
