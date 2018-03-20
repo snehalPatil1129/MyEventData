@@ -18,6 +18,7 @@ import Session from '../../views/Sessions/Session';
 import Registration from '../../views/Registration/Registration';
 import Rooms from '../../views/Rooms/Rooms';
 import RegistrationList from '../../views/RegistrationList/RegistrationList';
+import QuetionFormEdit from '../../views/Questions/QuetionFormEdit';
 
 class Full extends Component {
   render() {
@@ -39,6 +40,7 @@ class Full extends Component {
                 <Route path='/session' name='Session' component={Session} />
                 <Route path='/rooms' name='Rooms' component={Rooms} />
                 <Route path='/renderForm' name='RenderForm' component={RenderForm} />
+                <Route path='/quetionFormEdit' name='QuetionFormEdit' component={QuetionFormEdit} />
                 <Route path='/questions' name='Questions' component={Questions} />
                 <Route path='/registrationList' name='Registration List' component={RegistrationList} />
                 <Redirect from="/" to="/dashboard"/>

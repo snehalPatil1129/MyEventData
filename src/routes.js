@@ -7,6 +7,8 @@ const routes = {
   '/attendance' : 'Attendance',
   '/renderForm': 'RenderForm',
   '/questions' : 'Questions',
+  '/quetionFormEdit' : 'QuetionFormEdit',
+  
   '/session' : 'Session',
   'session/sessionForm' : 'sessionForm',
   '/registration' : 'Registration',

@@ -40,6 +40,12 @@ export default {
       icon: 'icon-question'
     },
     {
+      name: 'QuetionFormEdit',
+      url: '/quetionFormEdit',
+      icon: 'icon-question'
+    },
+    
+    {
       name: 'Registration',
       url: '/registration',     
       icon: 'icon-note'
