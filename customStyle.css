@@ -1,0 +1,184 @@
+body{
+    background: #fff!important;
+    font-family: Roboto!important;
+}
+.sidebar .nav-link, .sidebar .navbar .dropdown-toggle, .navbar .sidebar .dropdown-toggle {    
+    font-size: 13px!important;
+    color: #e8e8e8!important;
+}
+.btn{
+    border-radius: 3px!important;
+    font-size: 13px!important;
+}
+.table-bordered thead th{
+    background: #EEF1F6!important;
+    vertical-align: middle!important;
+}
+.table td {   
+    border: 0px solid #ddd!important;
+    border-top: 1px solid #ddd!important;
+    vertical-align: middle!important;
+    font-size: 13px;
+}
+.table th { 
+    font-size: 13px;
+}
+.table-bordered {
+    border: 0px solid #ddd!important;
+}
+.table-bordered td {
+    border: 0px solid #ddd!important;
+    border-bottom: 1px solid #ddd!important;
+}
+.table-bordered th{    
+    border-top: 0px solid #ddd!important;
+    border: 0px solid #ddd!important;
+}
+.table thead th {    
+    background: #EEF1F6!important;
+    vertical-align: middle!important;
+    border: 0;
+    border-bottom: 0!important;
+}
+.card-body h1{
+    font-size: 22px!important;
+}
+.breadcrumb {  
+    border-bottom: 1px solid #ddd!important;
+    font-weight: 500;
+    font-size: 13px;
+}
+.app-header.navbar {
+    border-bottom: 1px solid #ddd!important;
+}
+.btn i{
+    vertical-align: middle;
+    margin-right: 3px;
+    margin-top: -2px;
+}
+.badge {   
+    padding: 5px 10px!important;
+    font-size: 11px!important;
+    border-radius: 25px!important;
+}
+.table-hover tbody tr:hover {
+    background-color: rgba(226, 236, 131, 0.175)!important;
+}
+.table tr:hover {
+    background-color: rgba(226, 236, 131, 0.175)!important;
+}
+.regHeading{
+    margin-bottom: 0;
+    font-weight: 500;
+    font-size: 18px;
+}
+.form-check-inline .form-check-input {  
+    margin-top: 2px!important;  
+}
+.noBottomMargin{
+    margin-bottom: 0!important;
+}
+.form-group label {
+    font-weight: 500!important;
+    font-size: 13px;
+}
+.regLabelForm{
+    margin-bottom: 0;
+    margin-left: 5px;
+    margin-top: -6px;
+    vertical-align: middle;
+}
+.help-block{
+    position: absolute;
+    color: red;
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 37px;
+}
+.roleLabel{
+    font-size: 13px!important;
+    vertical-align: middle;
+    margin-top: -1px;
+}
+input[type="radio"], input[type="checkbox"] {
+    vertical-align: middle;
+    margin-top: -2px;
+}
+.rollnameHelpBlock{
+    margin-top: 0;
+}
+.app-footer {
+    font-size: 13px;
+    font-weight: 500;
+    border-top: 1px solid #ddd!important;
+}
+.app-header.navbar .navbar-brand {
+    background-image: none!important;
+}
+.logoImg{
+    width: 130px;
+    margin-top: 10px;
+}
+
+/*** D.20 March 2018 ****/
+.sessionCard .help-block{
+    margin-top: 0;
+}
+.sessionErrorBlock{
+    float: right!important;
+    position: relative!important;
+    margin-top: -18px!important;
+}
+.rbc-toolbar button {
+    font-size: 13px!important;
+    font-weight: 500!important;
+}
+.rbc-time-slot {
+    font-size: 12px!important;
+    font-weight: 500!important;
+}
+.marginBottomZero{
+    margin-bottom: 0!important;
+}
+.paddingTop8{
+    padding-top: 8px;
+}
+.userResponseModalHead{
+    background: #f1f1f1;
+    border-bottom: none!important;
+}
+.rbc-toolbar > .rbc-btn-group:nth-child(3) button:nth-child(1){
+    display: none;
+}
+.rbc-toolbar > .rbc-btn-group:nth-child(3) button:nth-child(4){
+    display: none;
+}
+.questionModal .modal-dialog {
+    width: 87%!important;
+    max-width: 100%!important;
+}
+
+.questionModal .card-body, .card-block {
+    height: 350px!important;
+    overflow-y: auto!important;
+}
+
+/************* D. 22 March 2018 ************/
+.rbc-time-header > .rbc-row:nth-child(2){   
+    display: none;
+}
+.rbc-time-content {
+    border-top: 1px solid #DDD!important;
+}
+.sessionCardBody{
+    padding: 10px!important; 
+}
+.sessionCardHeader {
+    padding: 8px!important;
+}
+.rbc-toolbar .rbc-toolbar-label {   
+    font-size: 20px!important;
+    font-weight: 700!important;
+    letter-spacing: 0px!important;
+    color: #0e83ad!important;
+}

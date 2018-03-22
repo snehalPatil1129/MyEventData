@@ -1,38 +1,70 @@
 
 
 import React from 'react';
-import {Label, CardHeader, Container, Row, Col, Card, CardBody, CardFooter, Button, Input, InputGroup, InputGroupAddon, InputGroupText, FormGroup} from 'reactstrap';
-import {Link, Switch, Route, Redirect} from 'react-router-dom';
-
+import { Label, CardHeader, Container, Row, Col, Card, CardBody, CardFooter, Button, Input, InputGroup, InputGroupAddon, InputGroupText, FormGroup } from 'reactstrap';
+import { Link, Switch, Route, Redirect } from 'react-router-dom';
+import { DBUtil } from '../../../services';
+import *as firebase from 'firebase';
+import 'firebase/firestore';
+import { createBrowserHistory } from 'history';
+var history = createBrowserHistory()
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 
 class UserForm extends React.Component {
     constructor(props) {
         super(props);
-       
+        var history = { history }
         this.state = {
             user: {
                 firstName: '',
                 lastName: '',
                 emailId: '',
                 contactNo: '',
-                profile: ''
+                roleName: ''
             },
-            submitted: false,
-            isChecked: true
+            // submitted: false,
+            isChecked: true,
+            profilesValue: '',
+            profileData: []
         };
-
         this.changeFunction = this.changeFunction.bind(this);
         this.submitFunction = this.submitFunction.bind(this);
         this.resetField = this.resetField.bind(this);
-        this.toggleChange =this.toggleChange.bind(this);
+        this.toggleChange = this.toggleChange.bind(this);
+        this.getProfileList = this.getProfileList.bind(this);
+        this.changeprofile = this.changeprofile.bind(this);
+    }
+
+    componentWillMount() {
+        this.getProfileList();
+    }
+
+    changeprofile(profilesValue) {
+        const roleName = 'roleName';
+        const user = this.state.user;
+        user[roleName] = profilesValue;
+        this.setState({ user: user });
+        this.setState({ profilesValue });
+        console.log(this.state.user.roleName);
+    }
+
+    getProfileList() {
+        let thisRef = this;
+        let listRoles = [];
+        let i;
+        DBUtil.addChangeListener("Roles", function (response) {
+            response.forEach(function (Roledoc) {
+                listRoles.push({ label: Roledoc.id, value: Roledoc.id })
+            })
+        })
+        thisRef.setState(
+            { profileData: listRoles });
     }
 
     changeFunction(event) {
-       
         const { name, value } = event.target;
-      
         const { user } = this.state;
-      
         this.setState({
             user: {
                 ...user,
@@ -43,163 +75,133 @@ class UserForm extends React.Component {
 
     submitFunction(event) {
         event.preventDefault();
-
-        this.setState({ submitted: true });
+        let compRef = this;
         const { user } = this.state;
-         console.log("user", user)
-        
-        if (user.firstName && user.lastName && user.emailId) {
-          console.log("yess")
-            }
+        DBUtil.addObj("Users", user, function (response) {
+            compRef.props.history.push('/user');
+        })
+        alert("user created successfully");
     }
 
-      resetField()
-      {
-         this.setState({
+    resetField() {
+        this.setState({
             user: {
                 firstName: '',
                 lastName: '',
                 emailId: '',
                 contactNo: '',
-                profile :''
+                roleName: ''
             },
-           isChecked : false
+            isChecked: false
         });
-        }
-  
-       toggleChange()
-       {
-           this.setState({isChecked : !this.state.isChecked})
-           console.log("chekbox",this.state.isChecked )
-       }
+    }
+
+    toggleChange() {
+        this.setState({ isChecked: !this.state.isChecked })
+        // console.log("chekbox",this.state.isChecked )
+    }
 
 
     render() {
-       
-        const { user, submitted } = this.state;
-       
+        const { user, profilesValue, profileData } = this.state;
+        // const{submitted} = this.state;
+        let options = profileData;
         return (
-            <div>
-            <div>
-            <Link to="/user"> <Button type="button" color="secondary"> Back to List </Button></Link>
-               </div>
-            <div className="app flex-row align-items-center">
-                <Container>
-                 <Row className="justify-content-center">
-                 <Col md="6">
-                 <Card className="mx-4">
-                <CardHeader color="primary">
-                <strong>User Creation Form</strong>
-
-                </CardHeader>
-                 <CardBody className="p-4">
-                 
-                  
-                <form name="form" onSubmit={this.submitFunction}>
-
-                    
-                  <Row>
-                  <Col xs="12" className={(submitted && !user.firstName ? ' has-error' : '')}>        
-                  <FormGroup>
-                  <Label> First Name : </Label>
-                  <Input type="text" placeholder="Enter First Name" name="firstName" value={this.state.user.firstName} 
-                   onChange={this.changeFunction}/>
-                    {submitted && !user.firstName &&
-                            <div className="help-block">First Name is required</div>
-                        }
-                 </FormGroup>
-                 </Col>
+            <div className="animated fadeIn">
+                <div>
+                    <Link to="/user"> <Button type="button" color="primary"><i class="fa fa-chevron-left"></i> Back to List </Button></Link>
+                </div>
+                <br />
+                <Row className="justify-content-left">
+                    <Col md="8">
+                        <Card className="">
+                            <CardHeader>
+                                <label className="regHeading">User Form</label>
+                            </CardHeader>
+                            <CardBody className="p-4">
+                                <form name="form" onSubmit={this.submitFunction}>
+                                    <FormGroup row>
+                                        <Col md="6" >
+                                            <InputGroup>
+                                                <InputGroupAddon addonType="prepend">
+                                                    <InputGroupText>
+                                                        <i className="icon-user"></i>
+                                                    </InputGroupText>
+                                                </InputGroupAddon>
+                                                <Input type="text" placeholder="Enter First Name" name="firstName" value={this.state.user.firstName}
+                                                    onChange={this.changeFunction} />
+                                            </InputGroup>
+                                        </Col>
+                                        <Col md="6" >
+                                            <InputGroup>
+                                                <InputGroupAddon addonType="prepend">
+                                                    <InputGroupText>
+                                                        <i className="icon-user"></i>
+                                                    </InputGroupText>
+                                                </InputGroupAddon>
+                                                <Input type="text" placeholder="Enter Last Name" name="lastName" value={this.state.user.lastName}
+                                                    onChange={this.changeFunction} />
+                                            </InputGroup>
+                                        </Col>
+                                    </FormGroup>
+                                    <br />
+                                    <FormGroup row>
+                                        <Col md="6" >
+                                            <InputGroup>
+                                                <InputGroupAddon addonType="prepend">
+                                                    <InputGroupText>@</InputGroupText>
+                                                </InputGroupAddon>
+                                                <Input type="text" placeholder="Enter valid Email Id" name="emailId" value={this.state.user.emailId}
+                                                    onChange={this.changeFunction} />
+                                            </InputGroup>
+                                        </Col>
+                                        <Col md="6">
+                                            <InputGroup>
+                                                <InputGroupAddon addonType="prepend">
+                                                    <InputGroupText>
+                                                        <i className="icon-phone"></i>
+                                                    </InputGroupText>
+                                                </InputGroupAddon>
+                                                <Input type="number" placeholder="Enter Contact Number " name="contactNo" value={this.state.user.contactNo}
+                                                    onChange={this.changeFunction} />
+                                            </InputGroup>
+                                        </Col>
+                                    </FormGroup>
+                                    <br />
+                                    <Row>
+                                        <Col md="6" >
+                                            <FormGroup>
+                                                <Select
+                                                    onChange={this.changeprofile}
+                                                    placeholder="Select Profile"
+                                                    simpleValue
+                                                    value={profilesValue}
+                                                    options={options}
+                                                />
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
+                                    <br />
+                                    <Row>
+                                        <Col xs="12">
+                                            <FormGroup>
+                                                {/* <input type="checkbox"  value = {this.state.isChecked}  onChange={this.toggleChange} />
+                  <Label> Reset Password on sign on  </Label> */}
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col md="12">
+                                            <Button type="submit" color="success">Create User</Button>
+                                            &nbsp;&nbsp;
+                                            <Button onClick={this.resetField} color="danger"><i className="fa fa-ban"></i> Reset</Button>
+                                        </Col>
+                                    </Row>
+                                </form>
+                            </CardBody>
+                        </Card>
+                    </Col>
                 </Row>
-
-
-                    
-                  <Row>
-                  <Col xs="12" className={(submitted && !user.lastName ? ' has-error' : '')}>        
-                  <FormGroup>
-                  <Label> Last Name : </Label>
-                  <Input type="text" placeholder="Enter Last Name" name="lastName" value={this.state.user.lastName} 
-                   onChange={this.changeFunction}/>
-                   {submitted && !user.lastName &&
-                             <div className="help-block">last name is required</div>
-                         }
-                 </FormGroup>
-                 </Col>
-                </Row>
-
-
-                  <Row>
-                  <Col xs="12" className={(submitted && !user.emailId ? ' has-error' : '')}>        
-                  <FormGroup>
-                  <Label> Email Id : </Label>
-                  <Input type="text" placeholder="Enter valid Email Id" name="emailId" value={this.state.user.emailId} 
-                   onChange={this.changeFunction}/>
-                   {submitted && !user.emailId &&
-                             <div className="help-block">emailId is required</div>
-                         }
-                 </FormGroup>
-                 </Col>
-                </Row>
-
-                      
-
-                  <Row>
-                  <Col xs="12">        
-                  <FormGroup>
-                  <Label> Contact Number : </Label>
-                  <Input type="numner" placeholder="Enter Contact Number " name="contactNo" value={this.state.user.contactNo} 
-                   onChange={this.changeFunction}/>
-                 </FormGroup>
-                 </Col>
-                </Row>
-               
-             
-                <Row>
-               <Col xs="12">  
-               <FormGroup>
-               <Label>Profile :</Label>
-              <Input type="select" name="profile" checked={this.state.user.profile}  onChange={this.changeFunction}>
-              <option>select profile</option>
-              <option>Volunteers</option>
-              <option>Delegates</option>
-              <option>Sponsors</option>
-              <option>Charter members</option>
-              </Input>
-              </FormGroup>
-              </Col>
-              </Row>
-           
-               <Row>
-                  <Col xs="12">        
-                  <FormGroup>
-                 <input type="checkbox"  value = {this.state.isChecked}  onChange={this.toggleChange} />
-                  <Label> Reset Password on sign on  </Label>
-                  </FormGroup>
-                 </Col>
-                </Row>
-
-               <Row>
-               <Col xs="12">  
-               <h1>   </h1>
-               <br/>
-               </Col>
-               </Row>    
-
-               <Row>
-               <Col sm={{ size: 'auto', offset: 2 }}>
-               <Button type="submit" color="primary">Create User</Button>
-               </Col>
-              <Col sm={{ size: 'auto', offset: 3 }}>
-              <Button onClick={this.resetField} color="success"><i className="fa fa-dot-circle-o"></i>Reset</Button>
-              </Col>
-              </Row>
-  
-                 </form>
-                </CardBody>
-                </Card>
-                </Col>
-                </Row>
-                </Container>
-            </div>
             </div>
         );
     }

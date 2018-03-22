@@ -26,7 +26,7 @@ export class DBUtil {
                 errorFn(ex);
             });
     }
-
+    
     static getDocRef(tableName) {
         return firestoredb.collection(tableName);
 
@@ -44,7 +44,6 @@ export class DBUtil {
                 errorFn(ex);
             });
     }
-    //added by snehal patil
     static addDoc(tableName ,docName ,doc ,callbackFn ,errorFn){
         this.getDocRef(tableName)
         .doc(docName)
@@ -56,13 +55,50 @@ export class DBUtil {
             errorFn(ex);
         });
     }
+    
     static addChangeListener(tableName, callbackFn, errorFn){
-       
-        this.getDocRef(tableName)
-        .onSnapshot((querySnapshot) =>{
+        this.getDocRef(tableName).onSnapshot((querySnapshot) =>{
             //Audit listener
             callbackFn(querySnapshot);
 
         });
     }
+
+     
+    static addDoc(tableName ,docName ,doc ,callbackFn ,errorFn){
+        this.getDocRef(tableName)
+        .doc(docName)
+        .set(doc)
+        .then((docRef) =>{
+            callbackFn(docRef);
+        })
+        .catch((ex) => {
+            errorFn(ex);
+        });
+    }
+
+    // Method for update only delete flag
+    static deleteDoc(tableName,param){
+        this.getDocRef(tableName).doc(param[0].docName).update({
+            "isDelete": param[0].deleteFlag
+          });
+    }
+
+    // Method for update delete flag & reamak
+    static deleteDocById(tableName,param){
+        this.getDocRef(tableName).doc(param[0].id).update({
+            "isDelete": param[0].deleteFlag,
+            "remark": param[0].remark
+          });
+    }
+    
+    // Method for update approve & reject registered user by Id
+    static approvedRejectDocById(tableName,param){
+        this.getDocRef(tableName).doc(param[0].id).update({
+            "isApproved": param[0].isApproved,
+            "isPending": param[0].isPending,
+            "isRejected": param[0].isRejected
+          });
+    }
+
 }

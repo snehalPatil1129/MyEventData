@@ -30,21 +30,20 @@ export default {
       icon: 'icon-note'
     },
     {
-      name: 'RenderForm',
-      url: '/renderForm',
+      name: 'Attendee',
+      url: '/attendee',
       icon: 'icon-note'
     },
-    {
-      name: 'Questions',
-      url: '/questions',
-      icon: 'icon-question'
-    },
-    {
-      name: 'QuetionFormEdit',
-      url: '/quetionFormEdit',
-      icon: 'icon-question'
-    },
-    
+    // {
+    //   name: 'RenderForm',
+    //   url: '/renderForm',
+    //   icon: 'icon-note'
+    // },
+    // {
+    //   name: 'Questions',
+    //   url: '/questions',
+    //   icon: 'icon-question'
+    // },
     {
       name: 'Registration',
       url: '/registration',     
@@ -55,6 +54,11 @@ export default {
       url: '/registrationList',
       icon: 'icon-note'
     },
+    // {
+    //   name: 'Event Questions',
+    //   url: '/eventQuestions',
+    //   icon: 'icon-note'
+    // },    
     {
       title: true,
       name: 'Users',

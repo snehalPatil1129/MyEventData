@@ -12,13 +12,14 @@ import User from '../../views/Users/User/';
 import Role from '../../views/Users/Role/';
 import Reports from '../../views/Reports/Reports';
 import Attendance from '../../views/Attendance/Attendance';
-import RenderForm from '../../views/Questions/RenderForm';
-import Questions from '../../views/Questions/Questions';
+//import RenderForm from '../../views/Questions/RenderForm';
+//import Questions from '../../views/Questions/Questions';
 import Session from '../../views/Sessions/Session';
 import Registration from '../../views/Registration/Registration';
 import Rooms from '../../views/Rooms/Rooms';
-import RegistrationList from '../../views/RegistrationList/RegistrationList';
-import QuetionFormEdit from '../../views/Questions/QuetionFormEdit';
+import RegistrationList from '../../views/RegistrationList/registrationList';
+//import EventQuestions from '../../views/EventQuestions/EventQuestions';
+import Attendee from '../../views/Attendee/Attendee';
 
 class Full extends Component {
   render() {
@@ -39,10 +40,12 @@ class Full extends Component {
                 <Route path='/attendance' name='Attendance' component={Attendance} />
                 <Route path='/session' name='Session' component={Session} />
                 <Route path='/rooms' name='Rooms' component={Rooms} />
-                <Route path='/renderForm' name='RenderForm' component={RenderForm} />
-                <Route path='/quetionFormEdit' name='QuetionFormEdit' component={QuetionFormEdit} />
-                <Route path='/questions' name='Questions' component={Questions} />
+                {/* <Route path='/renderForm' name='RenderForm' component={RenderForm} />
+                <Route path='/questions' name='Questions' component={Questions} />*/}
                 <Route path='/registrationList' name='Registration List' component={RegistrationList} />
+                {/* <Route path='/eventQuestions' name='Event Questions' component={EventQuestions} /> */}
+                <Route path='/attendee' name='Attendee' component={Attendee} />
+                
                 <Redirect from="/" to="/dashboard"/>
               </Switch>
             </Container>
